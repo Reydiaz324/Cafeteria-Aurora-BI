@@ -90,7 +90,6 @@ Para reproducir ambas soluciones y el experimento, se requiere el siguiente ento
 │   ├── V3_DATA_MART_ETL.sql    # EXPERIMENTO: Creación de Cafeteria_DM (Star Schema) y Pipeline ETL
 │   ├── V4_USUARIO_DESARROLLADOR.sql # Perfil DDL restringido (sin permisos de DROP DATABASE)
 │   └── V5_AUDITORIA_DDL.sql    # Trigger DDL de auditoría y tabla LOG_AUDITORIA_DDL
-├── presentacion_powerbi_cafeteria.html # Presentación interactiva en HTML para la sustentación
 ├── .gitignore                  # Exclusión de binarios, .vs/, compilados y archivos temporales
 └── README.md                   # Documentación técnica y guía de reproducción
 ```
