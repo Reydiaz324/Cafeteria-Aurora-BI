@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="BD_CafeteriaDataSet" targetNamespace="http://tempuri.org/BD_CafeteriaDataSet.xsd" xmlns:mstns="http://tempuri.org/BD_CafeteriaDataSet.xsd" xmlns="http://tempuri.org/BD_CafeteriaDataSet.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection AppSettingsObjectName="Settings" AppSettingsPropertyName="BD_CafeteriaConnectionString" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="BD_CafeteriaConnectionString (Settings)" ParameterPrefix="@" PropertyReference="ApplicationSettings.guicafeteria.Properties.Settings.GlobalReference.Default.BD_CafeteriaConnectionString" Provider="System.Data.SqlClient" />
+        </Connections>
+        <Tables>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="PEDIDOTableAdapter" GeneratorDataComponentClassName="PEDIDOTableAdapter" Name="PEDIDO" UserDataComponentName="PEDIDOTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="BD_CafeteriaConnectionString (Settings)" DbObjectName="BD_Cafeteria.dbo.PEDIDO" DbObjectType="Table" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="false">
+                    <CommandText>SELECT metodo_pago FROM dbo.PEDIDO</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="metodo_pago" DataSetColumn="metodo_pago" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+        </Tables>
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="BD_CafeteriaDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="True" msprop:Generator_UserDSName="BD_CafeteriaDataSet" msprop:Generator_DataSetName="BD_CafeteriaDataSet">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="PEDIDO" msprop:Generator_RowEvHandlerName="PEDIDORowChangeEventHandler" msprop:Generator_RowDeletedName="PEDIDORowDeleted" msprop:Generator_RowDeletingName="PEDIDORowDeleting" msprop:Generator_RowEvArgName="PEDIDORowChangeEvent" msprop:Generator_TablePropName="PEDIDO" msprop:Generator_RowChangedName="PEDIDORowChanged" msprop:Generator_RowChangingName="PEDIDORowChanging" msprop:Generator_TableClassName="PEDIDODataTable" msprop:Generator_RowClassName="PEDIDORow" msprop:Generator_TableVarName="tablePEDIDO" msprop:Generator_UserTableName="PEDIDO">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="metodo_pago" msprop:Generator_ColumnPropNameInRow="metodo_pago" msprop:Generator_ColumnPropNameInTable="metodo_pagoColumn" msprop:Generator_ColumnVarNameInTable="columnmetodo_pago" msprop:Generator_UserColumnName="metodo_pago">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="40" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

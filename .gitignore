@@ -1,0 +1,44 @@
+# =====================================================================
+# .gitignore - Proyecto Cafetería Aurora (Solución POS & Power BI)
+# =====================================================================
+
+# Compilación y Binarios de Visual Studio / C# (.NET)
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+*.exe
+*.dll
+*.pdb
+*.cache
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Carpetas internas de Visual Studio
+.vs/
+*.vspscc
+*.vssscc
+
+# Archivos comprimidos y respaldos temporales
+*.zip
+*.bak*
+*.tmp
+*.log
+scratch/
+.system_generated/
+
+# Archivos de configuración local con credenciales
+*.secret*
+*.env
+App.config.local
+secrets.json
+
+# Cursos externos / Proyectos paralelos (POO, NetBeans, etc.)
+/CAFETERIA_poo/
+/GUICAFETERIA/
+/java_netbeans_sample/
+*JAVA_NETBEANS*
+PJ_AURORA.txt
+*.xlsx
