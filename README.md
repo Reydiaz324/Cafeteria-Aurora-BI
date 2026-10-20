@@ -134,7 +134,7 @@ El objetivo del experimento es evaluar la transformación de datos operacionales
    * **Carga (Load):** Crea y puebla la base `Cafeteria_DM` con las dimensiones `Dim_Tiempo`, `Dim_Producto`, `Dim_Empleado`, `Dim_Cliente`, `Dim_MetodoPago` y la tabla de hechos `Fact_Ventas`.
 3. Validar el resultado del experimento ejecutando una consulta analítica en `Cafeteria_DM`:
    ```sql
-   USE Cafeteria_DM;
+   USE Cafeteria_DM
    SELECT 
        p.nombre_producto,
        t.mes_nombre,
@@ -144,7 +144,7 @@ El objetivo del experimento es evaluar la transformación de datos operacionales
    INNER JOIN Dim_Producto p ON f.id_producto = p.id_producto
    INNER JOIN Dim_Tiempo t ON f.id_tiempo = t.id_tiempo
    GROUP BY p.nombre_producto, t.mes_nombre
-   ORDER BY total_ingresos DESC;
+   ORDER BY total_ingresos DESC
    ```
 
 ---
@@ -170,11 +170,11 @@ El objetivo del experimento es evaluar la transformación de datos operacionales
 2. Probar el disparador de auditoría realizando un cambio de estructura controlado:
    ```sql
    -- Crear una tabla temporal de prueba
-   CREATE TABLE dbo.TEST_AUDIT (id INT);
-   DROP TABLE dbo.TEST_AUDIT;
+   CREATE TABLE dbo.TEST_AUDIT (id INT)
+   DROP TABLE dbo.TEST_AUDIT
 
    -- Consultar el registro de auditoría capturado en tiempo real
-   SELECT * FROM dbo.LOG_AUDITORIA_DDL ORDER BY fecha_evento DESC;
+   SELECT * FROM dbo.LOG_AUDITORIA_DDL ORDER BY fecha_evento DESC
    ```
 
 ---

@@ -6,12 +6,12 @@
 --           Incluye blindaje de seguridad (DENY) para que no puedan borrar el log.
 -- ============================================================================
 
-USE [BD_Cafeteria];
+USE [BD_Cafeteria]
 GO
 
-SET ANSI_NULLS ON;
+SET ANSI_NULLS ON
 GO
-SET QUOTED_IDENTIFIER ON;
+SET QUOTED_IDENTIFIER ON
 GO
 
 -- ----------------------------------------------------------------------------
@@ -30,12 +30,12 @@ BEGIN
         esquema NVARCHAR(100),
         comando_sql NVARCHAR(MAX),
         ip_cliente NVARCHAR(50)
-    );
-    PRINT 'Tabla LOG_AUDITORIA_DDL creada con éxito.';
+    )
+    PRINT 'Tabla LOG_AUDITORIA_DDL creada con éxito.'
 END
 ELSE
 BEGIN
-    PRINT 'Tabla LOG_AUDITORIA_DDL ya existe.';
+    PRINT 'Tabla LOG_AUDITORIA_DDL ya existe.'
 END
 GO
 
@@ -51,13 +51,13 @@ WITH EXECUTE AS 'dbo'
 FOR DDL_DATABASE_LEVEL_EVENTS
 AS
 BEGIN
-    SET NOCOUNT ON;
+    SET NOCOUNT ON
     
-    DECLARE @data XML = EVENTDATA();
+    DECLARE @data XML = EVENTDATA()
     
     -- Ignoramos eventos sobre la propia tabla de auditoría para evitar recursividad
     IF @data.value('(/EVENT_INSTANCE/ObjectName)[1]', 'NVARCHAR(256)') = 'LOG_AUDITORIA_DDL'
-        RETURN;
+        RETURN
         
     INSERT INTO LOG_AUDITORIA_DDL (
         fecha_evento,
@@ -80,10 +80,10 @@ BEGIN
         @data.value('(/EVENT_INSTANCE/SchemaName)[1]', 'NVARCHAR(100)'),
         @data.value('(/EVENT_INSTANCE/TSQLCommand/CommandText)[1]', 'NVARCHAR(MAX)'),
         @data.value('(/EVENT_INSTANCE/ClientHost)[1]', 'NVARCHAR(50)')
-    );
-END;
+    )
+END
 GO
-PRINT 'Trigger TRG_AUDITORIA_DDL instalado y activo con ejecución privilegiada.';
+PRINT 'Trigger TRG_AUDITORIA_DDL instalado y activo con ejecución privilegiada.'
 GO
 
 -- ----------------------------------------------------------------------------
@@ -93,8 +93,8 @@ GO
 -- ----------------------------------------------------------------------------
 IF EXISTS (SELECT * FROM sys.database_principals WHERE name = 'usr_desarrollador')
 BEGIN
-    DENY INSERT, UPDATE, DELETE ON OBJECT::LOG_AUDITORIA_DDL TO usr_desarrollador;
-    DENY ALTER, CONTROL ON OBJECT::LOG_AUDITORIA_DDL TO usr_desarrollador;
-    PRINT 'Blindaje de seguridad aplicado: usr_desarrollador NO puede modificar ni eliminar LOG_AUDITORIA_DDL.';
+    DENY INSERT, UPDATE, DELETE ON OBJECT::LOG_AUDITORIA_DDL TO usr_desarrollador
+    DENY ALTER, CONTROL ON OBJECT::LOG_AUDITORIA_DDL TO usr_desarrollador
+    PRINT 'Blindaje de seguridad aplicado: usr_desarrollador NO puede modificar ni eliminar LOG_AUDITORIA_DDL.'
 END
 GO

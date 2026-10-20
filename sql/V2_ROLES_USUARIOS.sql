@@ -16,7 +16,7 @@ BEGIN
         [descripcion] VARCHAR(150) NULL,
         CONSTRAINT [PK_ROL] PRIMARY KEY CLUSTERED ([id_rol] ASC),
         CONSTRAINT [UQ_ROL_nombre] UNIQUE NONCLUSTERED ([nombre_rol] ASC)
-    );
+    )
 END
 GO
 
@@ -35,16 +35,16 @@ BEGIN
         CONSTRAINT [UQ_USUARIO_username] UNIQUE NONCLUSTERED ([username] ASC),
         CONSTRAINT [FK_USUARIO_EMPLEADO] FOREIGN KEY ([id_empleado]) REFERENCES [dbo].[EMPLEADO] ([id_empleado]),
         CONSTRAINT [FK_USUARIO_ROL] FOREIGN KEY ([id_rol]) REFERENCES [dbo].[ROL] ([id_rol])
-    );
+    )
 END
 GO
 
 -- 3. POBLAR ROLES INICIALES
 IF NOT EXISTS (SELECT 1 FROM [dbo].[ROL] WHERE [nombre_rol] = 'Encargado')
-    INSERT INTO [dbo].[ROL] ([nombre_rol], [descripcion]) VALUES ('Encargado', 'Acceso total: métricas, inventario, reportes y administración');
+    INSERT INTO [dbo].[ROL] ([nombre_rol], [descripcion]) VALUES ('Encargado', 'Acceso total: métricas, inventario, reportes y administración')
 
 IF NOT EXISTS (SELECT 1 FROM [dbo].[ROL] WHERE [nombre_rol] = 'Barista')
-    INSERT INTO [dbo].[ROL] ([nombre_rol], [descripcion]) VALUES ('Barista', 'Acceso operativo: toma de pedidos, emisión de boletas y caja');
+    INSERT INTO [dbo].[ROL] ([nombre_rol], [descripcion]) VALUES ('Barista', 'Acceso operativo: toma de pedidos, emisión de boletas y caja')
 GO
 
 -- 4. POBLAR USUARIOS INICIALES (Contraseñas con SHA2-256)
@@ -61,7 +61,7 @@ BEGIN
         'mariana.vega', 
         LOWER(CONVERT(VARCHAR(64), HASHBYTES('SHA2_256', '1234'), 2)),
         'Activo'
-    );
+    )
 END
 GO
 
@@ -75,7 +75,7 @@ BEGIN
         'jose.castillo', 
         LOWER(CONVERT(VARCHAR(64), HASHBYTES('SHA2_256', '1234'), 2)),
         'Activo'
-    );
+    )
 END
 GO
 
@@ -85,8 +85,8 @@ CREATE OR ALTER PROCEDURE [dbo].[SP_AUTENTICAR_USUARIO]
     @password VARCHAR(100)
 AS
 BEGIN
-    SET NOCOUNT ON;
-    DECLARE @hash VARCHAR(64) = LOWER(CONVERT(VARCHAR(64), HASHBYTES('SHA2_256', @password), 2));
+    SET NOCOUNT ON
+    DECLARE @hash VARCHAR(64) = LOWER(CONVERT(VARCHAR(64), HASHBYTES('SHA2_256', @password), 2))
 
     SELECT 
         u.id_usuario,
@@ -102,10 +102,10 @@ BEGIN
     WHERE LOWER(u.username) = LOWER(TRIM(@username))
       AND u.password_hash = @hash
       AND u.estado = 'Activo'
-      AND e.estado = 'Activo';
-END;
+      AND e.estado = 'Activo'
+END
 GO
 
 -- Otorgar permisos de ejecución al usuario de la aplicación
-GRANT EXECUTE ON [dbo].[SP_AUTENTICAR_USUARIO] TO [app_cafeteria];
+GRANT EXECUTE ON [dbo].[SP_AUTENTICAR_USUARIO] TO [app_cafeteria]
 GO

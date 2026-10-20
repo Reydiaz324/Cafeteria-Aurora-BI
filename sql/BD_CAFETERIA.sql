@@ -66,7 +66,7 @@ SELECT
     pr.nombre_proveedor
 FROM PRODUCTO p
 INNER JOIN CATEGORIA c ON p.id_categoria = c.id_categoria
-INNER JOIN PROVEEDOR pr ON p.id_proveedor = pr.id_proveedor;
+INNER JOIN PROVEEDOR pr ON p.id_proveedor = pr.id_proveedor
 GO
 /****** Objeto: Table [dbo].[CLIENTE] Fecha de script: 1/07/2026 00:47:43 ******/
 SET ANSI_NULLS ON
@@ -140,7 +140,7 @@ SELECT
     e.nombres + ' ' + e.apellidos AS empleado
 FROM PEDIDO pe
 INNER JOIN CLIENTE c ON pe.id_cliente = c.id_cliente
-INNER JOIN EMPLEADO e ON pe.id_empleado = e.id_empleado;
+INNER JOIN EMPLEADO e ON pe.id_empleado = e.id_empleado
 GO
 /****** Objeto: Table [dbo].[INVENTARIO] Fecha de script: 1/07/2026 00:47:43 ******/
 SET ANSI_NULLS ON
@@ -171,7 +171,7 @@ SELECT
     i.cantidad_disponible,
     i.fecha_actualizacion
 FROM INVENTARIO i
-INNER JOIN PRODUCTO p ON i.id_producto = p.id_producto;
+INNER JOIN PRODUCTO p ON i.id_producto = p.id_producto
 GO
 /****** Objeto: Table [dbo].[DETALLE_PEDIDO] Fecha de script: 1/07/2026 00:47:43 ******/
 SET ANSI_NULLS ON
@@ -586,19 +586,19 @@ AS
 BEGIN
     IF @nuevo_stock < 0
     BEGIN
-        RAISERROR('El stock no puede ser negativo.', 16, 1);
-        RETURN;
-    END;
+        RAISERROR('El stock no puede ser negativo.', 16, 1)
+        RETURN
+    END
 
     UPDATE PRODUCTO
     SET stock = @nuevo_stock
-    WHERE id_producto = @id_producto;
+    WHERE id_producto = @id_producto
 
     UPDATE INVENTARIO
     SET cantidad_disponible = @nuevo_stock,
         fecha_actualizacion = CAST(GETDATE() AS DATE)
-    WHERE id_producto = @id_producto;
-END;
+    WHERE id_producto = @id_producto
+END
 GO
 /****** Objeto: StoredProcedure [dbo].[SP_LISTAR_PRODUCTOS_POR_CATEGORIA] Fecha de script: 1/07/2026 00:47:53 ******/
 SET ANSI_NULLS ON
@@ -617,8 +617,8 @@ BEGIN
         stock,
         estado
     FROM PRODUCTO
-    WHERE id_categoria = @id_categoria;
-END;
+    WHERE id_categoria = @id_categoria
+END
 GO
 /****** Objeto: StoredProcedure [dbo].[SP_REGISTRAR_CLIENTE] Fecha de script: 1/07/2026 00:47:53 ******/
 SET ANSI_NULLS ON
@@ -633,8 +633,8 @@ CREATE PROCEDURE [dbo].[SP_REGISTRAR_CLIENTE]
 AS
 BEGIN
     INSERT INTO CLIENTE (nombres, apellidos, telefono, correo)
-    VALUES (@nombres, @apellidos, @telefono, @correo);
-END;
+    VALUES (@nombres, @apellidos, @telefono, @correo)
+END
 GO
 /****** Objeto: StoredProcedure [dbo].[SP_REGISTRAR_PEDIDO] Fecha de script: 1/07/2026 00:47:53 ******/
 SET ANSI_NULLS ON
@@ -650,6 +650,6 @@ CREATE PROCEDURE [dbo].[SP_REGISTRAR_PEDIDO]
 AS
 BEGIN
     INSERT INTO PEDIDO (fecha_pedido, total, metodo_pago, id_cliente, id_empleado)
-    VALUES (@fecha_pedido, @total, @metodo_pago, @id_cliente, @id_empleado);
-END;
+    VALUES (@fecha_pedido, @total, @metodo_pago, @id_cliente, @id_empleado)
+END
 GO

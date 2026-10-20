@@ -15,11 +15,11 @@
 -- ==================================================================================
 IF NOT EXISTS (SELECT name FROM sys.databases WHERE name = 'Cafeteria_DM')
 BEGIN
-    CREATE DATABASE Cafeteria_DM;
+    CREATE DATABASE Cafeteria_DM
 END
 GO
 
-USE Cafeteria_DM;
+USE Cafeteria_DM
 GO
 
 -- ==================================================================================
@@ -35,7 +35,7 @@ BEGIN
         nombre_producto VARCHAR(100) NOT NULL,
         categoria VARCHAR(80) NOT NULL,
         precio_unitario DECIMAL(10,2) NOT NULL
-    );
+    )
 END
 GO
 
@@ -50,7 +50,7 @@ BEGIN
         nombre_mes VARCHAR(20) NOT NULL,
         dia INT NOT NULL,
         dia_semana VARCHAR(20) NOT NULL
-    );
+    )
 END
 GO
 
@@ -63,7 +63,7 @@ BEGIN
         nombre_completo VARCHAR(160) NOT NULL,
         cargo VARCHAR(60) NOT NULL,
         turno VARCHAR(30) NOT NULL
-    );
+    )
 END
 GO
 
@@ -75,7 +75,7 @@ BEGIN
         id_cliente_bk INT NOT NULL,
         nombre_completo VARCHAR(160) NOT NULL,
         telefono VARCHAR(20) NULL
-    );
+    )
 END
 GO
 
@@ -85,7 +85,7 @@ BEGIN
     CREATE TABLE dbo.Dim_MetodoPago (
         id_metodo_pago_sk INT IDENTITY(1,1) NOT NULL CONSTRAINT PK_Dim_MetodoPago PRIMARY KEY CLUSTERED,
         metodo_pago VARCHAR(40) NOT NULL
-    );
+    )
 END
 GO
 
@@ -105,7 +105,7 @@ BEGIN
         -- Medidas Cuantitativas:
         cantidad INT NOT NULL,
         monto_total DECIMAL(10,2) NOT NULL
-    );
+    )
 END
 GO
 
@@ -115,21 +115,21 @@ GO
 CREATE OR ALTER PROCEDURE dbo.SP_EJECUTAR_ETL_VENTAS
 AS
 BEGIN
-    SET NOCOUNT ON;
+    SET NOCOUNT ON
     BEGIN TRY
-        BEGIN TRANSACTION;
+        BEGIN TRANSACTION
 
         -- Limpiar datos antiguos para carga limpia
-        DELETE FROM dbo.Fact_Ventas;
-        DELETE FROM dbo.Dim_Producto;
-        DBCC CHECKIDENT ('dbo.Dim_Producto', RESEED, 0);
-        DELETE FROM dbo.Dim_Empleado;
-        DBCC CHECKIDENT ('dbo.Dim_Empleado', RESEED, 0);
-        DELETE FROM dbo.Dim_Cliente;
-        DBCC CHECKIDENT ('dbo.Dim_Cliente', RESEED, 0);
-        DELETE FROM dbo.Dim_MetodoPago;
-        DBCC CHECKIDENT ('dbo.Dim_MetodoPago', RESEED, 0);
-        DELETE FROM dbo.Dim_Tiempo;
+        DELETE FROM dbo.Fact_Ventas
+        DELETE FROM dbo.Dim_Producto
+        DBCC CHECKIDENT ('dbo.Dim_Producto', RESEED, 0)
+        DELETE FROM dbo.Dim_Empleado
+        DBCC CHECKIDENT ('dbo.Dim_Empleado', RESEED, 0)
+        DELETE FROM dbo.Dim_Cliente
+        DBCC CHECKIDENT ('dbo.Dim_Cliente', RESEED, 0)
+        DELETE FROM dbo.Dim_MetodoPago
+        DBCC CHECKIDENT ('dbo.Dim_MetodoPago', RESEED, 0)
+        DELETE FROM dbo.Dim_Tiempo
 
         -- 1. ETL Dim_Producto (Desnormalización de Producto con Categoría)
         INSERT INTO dbo.Dim_Producto (id_producto_bk, nombre_producto, categoria, precio_unitario)
@@ -139,7 +139,7 @@ BEGIN
             c.nombre_categoria,
             p.precio
         FROM BD_Cafeteria.dbo.PRODUCTO p
-        INNER JOIN BD_Cafeteria.dbo.CATEGORIA c ON p.id_categoria = c.id_categoria;
+        INNER JOIN BD_Cafeteria.dbo.CATEGORIA c ON p.id_categoria = c.id_categoria
 
         -- 2. ETL Dim_Empleado (Concatenación de nombres y apellidos)
         INSERT INTO dbo.Dim_Empleado (id_empleado_bk, nombre_completo, cargo, turno)
@@ -148,7 +148,7 @@ BEGIN
             nombres + ' ' + apellidos,
             cargo,
             turno
-        FROM BD_Cafeteria.dbo.EMPLEADO;
+        FROM BD_Cafeteria.dbo.EMPLEADO
 
         -- 3. ETL Dim_Cliente (Manejo de nulos y estandarización)
         INSERT INTO dbo.Dim_Cliente (id_cliente_bk, nombre_completo, telefono)
@@ -156,12 +156,12 @@ BEGIN
             id_cliente,
             nombres + ' ' + apellidos,
             ISNULL(telefono, 'Sin teléfono')
-        FROM BD_Cafeteria.dbo.CLIENTE;
+        FROM BD_Cafeteria.dbo.CLIENTE
 
         -- 4. ETL Dim_MetodoPago (Extracción de catálogo único de pagos)
         INSERT INTO dbo.Dim_MetodoPago (metodo_pago)
         SELECT DISTINCT metodo_pago 
-        FROM BD_Cafeteria.dbo.PEDIDO;
+        FROM BD_Cafeteria.dbo.PEDIDO
 
         -- 5. ETL Dim_Tiempo (Desglose de fechas en atributos analíticos)
         INSERT INTO dbo.Dim_Tiempo (id_tiempo_sk, fecha, anio, mes, nombre_mes, dia, dia_semana)
@@ -173,7 +173,7 @@ BEGIN
             DATENAME(MONTH, fecha_pedido),
             DAY(fecha_pedido),
             DATENAME(WEEKDAY, fecha_pedido)
-        FROM BD_Cafeteria.dbo.PEDIDO;
+        FROM BD_Cafeteria.dbo.PEDIDO
 
         -- 6. ETL Fact_Ventas (Cruce dimensional y carga de métricas)
         INSERT INTO dbo.Fact_Ventas (
@@ -201,14 +201,17 @@ BEGIN
         INNER JOIN dbo.Dim_Empleado de ON p.id_empleado = de.id_empleado_bk
         INNER JOIN dbo.Dim_Cliente dc ON p.id_cliente = dc.id_cliente_bk
         INNER JOIN dbo.Dim_MetodoPago dm ON p.metodo_pago = dm.metodo_pago
-        INNER JOIN dbo.Dim_Tiempo t ON p.fecha_pedido = t.fecha;
+        INNER JOIN dbo.Dim_Tiempo t ON p.fecha_pedido = t.fecha
 
-        COMMIT TRANSACTION;
-        PRINT 'Proceso ETL completado exitosamente.';
+        COMMIT TRANSACTION
+        PRINT 'Proceso ETL completado exitosamente.'
     END TRY
     BEGIN CATCH
-        ROLLBACK TRANSACTION;
-        THROW;
+        ROLLBACK TRANSACTION
+        DECLARE @ErrorMessage NVARCHAR(4000) = ERROR_MESSAGE()
+        DECLARE @ErrorSeverity INT = ERROR_SEVERITY()
+        DECLARE @ErrorState INT = ERROR_STATE()
+        RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState)
     END CATCH
-END;
+END
 GO
