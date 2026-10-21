@@ -107,5 +107,8 @@ END
 GO
 
 -- Otorgar permisos de ejecución al usuario de la aplicación
-GRANT EXECUTE ON [dbo].[SP_AUTENTICAR_USUARIO] TO [app_cafeteria]
+IF EXISTS (SELECT * FROM sys.database_principals WHERE name = 'app_cafeteria')
+BEGIN
+    GRANT EXECUTE ON [dbo].[SP_AUTENTICAR_USUARIO] TO [app_cafeteria]
+END
 GO
