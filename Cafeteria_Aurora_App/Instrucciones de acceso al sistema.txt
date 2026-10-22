@@ -1,0 +1,9 @@
+Instrucciones de acceso al sistema
+1. Interfaz de usuario (Cliente)
+Para acceder a la interfaz de usuario, ingrese un correo electrónico válido que contenga el símbolo @ y una contraseña de al menos 8 caracteres.
+
+2. Interfaz de administrador
+Para acceder a la interfaz de administración, ingrese las siguientes credenciales:
+- Correo electrónico: admin@gmail.com
+- Contraseña: Cualquier contraseña de al menos 8 caracteres.
+Nota: Estas credenciales son para fines de demostración y permiten visualizar las interfaces correspondientes.

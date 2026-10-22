@@ -26,6 +26,7 @@
 *.bak*
 *.tmp
 *.log
+*.apk
 scratch/
 .system_generated/
 
